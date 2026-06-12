@@ -28,17 +28,13 @@ rr_file   <- "risk_3d_example.rds"        # input from convert_temp_to_RR.R
 out_file  <- "microsim_death_ages.csv"    # individual-level output
 
 N_POP     <- 100000L   # synthetic population size
-MIN_AGE   <- 30L       # youngest start age (also baseline-hazard anchor age)
+MIN_AGE   <- 30L       # youngest start age (also baseline age-specific mortality)
 MAX_START <- 90L       # oldest start age
 MAX_AGE   <- 140L      # certain death at this age (removes censoring)
 DAYS_PER_YEAR <- 365L  # day 366 of leap years dropped
 
 # ---- annual baseline mortality hazard -----------------------
-#   mu(age) = GM_A + GM_B * exp(GM_b * (age - MIN_AGE))
-# Daily baseline p(death) = mu(age) / DAYS_PER_YEAR, clipped to [0, 1].
-GM_A <- 0.0005   # Makeham (age-independent) component
-GM_B <- 0.0008   # Gompertz scale at MIN_AGE
-GM_b <- 0.085    # Gompertz rate (mortality ~doubles every ~8 yr)
+#   mu(age) = GM_A + GM_B * exp(GM_b * (age - MIN_AGE))    # Gompertz rate (mortality ~doubles every ~8 yr)
 
 seed_pop <- 123L   # RNG seed for population age / grid assignment
 seed_sim <- 1234L  # RNG seed for the single Uniform(0,1) death draw
@@ -86,7 +82,7 @@ cat(sprintf("Built daily temperature RR series per grid (length %d days each;\n"
 cat(sprintf("  %d real RR years + %d neutral-RR tail years).\n\n",
             n_years, (MAX_AGE - MIN_AGE) - n_years))
 
-# ---- Age–mortality baseline (Gompertz–Makeham) -------------------------------
+# ---- Age–mortality baseline -------------------------------
 # Daily baseline p(death) for ages MIN_AGE .. MAX_AGE; at MAX_AGE it is forced
 # to 1.0 so every individual eventually dies.
 ages_all   <- MIN_AGE:MAX_AGE
