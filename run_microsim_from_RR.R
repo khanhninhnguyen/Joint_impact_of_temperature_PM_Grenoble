@@ -4,7 +4,7 @@
 #   Survival microsimulation driven by the 3D temperature relative-risk array
 #   from convert_temp_to_RR.R:
 #     * simulate a synthetic population (ID, start age, grid),
-#     * simulate a Gompertz–Makeham age–mortality baseline hazard,
+#     * simulate a age–mortality baseline hazard,
 #     * combine baseline daily risk with the temperature RR into a daily
 #       p(death) and build the survival curve S(t) = prod(1 - p),
 #     * draw one Uniform(0,1) per individual and read off the death day as the
@@ -33,7 +33,7 @@ MAX_START <- 90L       # oldest start age
 MAX_AGE   <- 140L      # certain death at this age (removes censoring)
 DAYS_PER_YEAR <- 365L  # day 366 of leap years dropped
 
-# ---- Gompertz–Makeham annual baseline mortality hazard -----------------------
+# ---- annual baseline mortality hazard -----------------------
 #   mu(age) = GM_A + GM_B * exp(GM_b * (age - MIN_AGE))
 # Daily baseline p(death) = mu(age) / DAYS_PER_YEAR, clipped to [0, 1].
 GM_A <- 0.0005   # Makeham (age-independent) component
